@@ -56,6 +56,7 @@ load('ex4weights.mat');
 
 % Unroll parameters 
 nn_params = [Theta1(:) ; Theta2(:)];
+pause;
 
 %% ================ Part 3: Compute Cost (Feedforward) ================
 %  To the neural network, you should first start by implementing the
@@ -72,7 +73,7 @@ nn_params = [Theta1(:) ; Theta2(:)];
 fprintf('\nFeedforward Using Neural Network ...\n')
 
 % Weight regularization parameter (we set this to 0 here).
-lambda = 0;
+lambda = 1;
 
 J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);

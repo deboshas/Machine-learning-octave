@@ -4,11 +4,18 @@ function p = predict(Theta1, Theta2, X)
 %   trained weights of a neural network (Theta1, Theta2)
 
 % Useful values
+
+% Add bias  to the X data matrix i.e input  layer of neural network
 m = size(X, 1);
+X = [ones(m, 1) X];
+
 num_labels = size(Theta2, 1);
 
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
+
+
+
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
@@ -20,19 +27,20 @@ p = zeros(size(X, 1), 1);
 %       information see 'help max'. If your examples are in rows, then, you
 %       can use max(A, [], 2) to obtain the max for each row.
 %
+%compue  seconde  layer activation outputs
 
-a1 = [ones(m, 1) X];
+sec_layer_activation_input=Theta1 * X';
+sec_layer_activation_output=sigmoid(sec_layer_activation_input);
 
-z2 = a1 * Theta1';
-a2 = sigmoid(z2);
+%Add bias to sec layer outputs
+sec_layer_activation_output = [ones(1,m) ;sec_layer_activation_output];
 
-a2 = [ones(m, 1) a2];
-z3 = a2 * Theta2';
-hypo = sigmoid(z3);
-[probability indices] = max(hypo');
-p = indices';
+out_layer_activation_input=Theta2 * sec_layer_activation_output;
 
+out_layer_activation_output=sigmoid(out_layer_activation_input);
 
+[probability indices]=max(out_layer_activation_output);%need to understand this function
+p=indices';
 
 
 
