@@ -30,9 +30,8 @@ Theta2_grad=zeros(size(Theta2));%gradient for layer3
 
 
 m = size(X, 1);
-X = [ones(m, 1) X];%add bias to the  input
-
-tempy=zeros(size(Theta2,1),size(X, 1));
+a1 = [ones(m,1) X];%add bias to the  input
+tempy=zeros(size(Theta2,1),size(a1, 1));
 
 for i=1:m,
   for k=1:num_labels,
@@ -44,27 +43,52 @@ end
 
 #Use feed forward to calculate  predicted value for every traning examples
 
-sec_layer_activation_input=Theta1 * X';
-sec_layer_activation_output=sigmoid(sec_layer_activation_input);
 
-%Add bias to sec layer outputs
-sec_layer_activation_output = [ones(1,m) ;sec_layer_activation_output];
+z2=Theta1 * a1';%2nd layer input
+a2=sigmoid(z2);%2nd layer activation output
+a2=[ones(1,m) ;a2];%adding bias to 2 nd layer output
+z3=Theta2 * a2;%3 rd layer activation input
+a3=sigmoid(z3);%3 rd layer activation output
 
-out_layer_activation_input=Theta2 * sec_layer_activation_output;
+%pred=sigmoid(out_layer_activation_input);
 
-pred=sigmoid(out_layer_activation_input);
+%oneminuspred=1 - pred;
+%logpred=log(pred);
+%logminuspred=log(oneminuspred);
 
-oneminuspred=1 - pred;
-logpred=log(pred);
-logminuspred=log(oneminuspred);
+regTheta1=Theta1;
+regTheta2=Theta2;
+%regTheta1 =  Theta1(:,2:end);
+%regTheta2 =  Theta2(:,2:end);
+regTheta1(:,1)=0; %exclude bias parameter%
+regTheta2(:,1)=0; %exclude bias parameter
+
+regularizedTerm=(lambda/(2*m)) *( sum((sum(regTheta1 .^2))) + sum(sum((regTheta2 .^2))));
 
 
-Theta1(:,1)=0;%exclude bias parameter
-Theta2(:,1)=0;%exclude bias parameter
-
-regularizedTerm=(lambda/(2*m)) *( sum((sum(Theta1 .^2))) + sum(sum((Theta2 .^2))));
+J= (sum(sum((tempy .* log(a3)) + ((1 - tempy) .* log(1-a3)))) *(-1/m)) + regularizedTerm;
 
 
-J= (sum(sum((tempy .* logpred) + ((1 - tempy) .* logminuspred))) *(-1/m)) + regularizedTerm;
+
+#Gradient calculation  usign back propagation
+for t=1:m,
+  a1t=a1(t,:);%fetch the data row
+  z2t=z2(:,t);%fetch t thcolmn
+  a2t=a2(:,t);%fetch t the column
+  z3t=z3(:,t);%fetch t the colun
+  a3t=a3(:,t);%fetch  t th column
+  err3t=a3t - tempy(:,t);%fetch t the  column
+  err2t=(Theta2(:,2:end))'* err3t .* sigmoidGradient(z2t);
+  Theta1_grad=Theta1_grad+err2t * a1t;
+  Theta2_grad=Theta2_grad+err3t * a2t';
+endfor
+
+Theta1_grad=(Theta1_grad * (1/m)) + ((lambda/m) .* regTheta1); %Gradient with respect to theat1 with regularization
+Theta2_grad=(Theta2_grad * (1/m)) + ((lambda/m) .* regTheta2); %Gradient with respect to theat2 with regularization
+
+
+%Unroll gradients
+grad=[Theta1_grad(:);Theta2_grad(:)];
+
 
 end
