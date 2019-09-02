@@ -73,7 +73,7 @@ pause;
 fprintf('\nFeedforward Using Neural Network ...\n')
 
 % Weight regularization parameter (we set this to 0 here).
-lambda = 1;
+lambda = 0.01;
 
 J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
@@ -92,7 +92,7 @@ pause;
 fprintf('\nChecking Cost Function (w/ Regularization) ... \n')
 
 % Weight regularization parameter (we set this to 1 here).
-lambda = 1;
+lambda = 0.01;
 
 J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
@@ -159,7 +159,7 @@ pause;
 fprintf('\nChecking Backpropagation (w/ Regularization) ... \n')
 
 %  Check gradients by running checkNNGradients
-lambda = 3;
+lambda = 0.01;
 checkNNGradients(lambda);
 
 % Also output the costFunction debugging values
@@ -184,10 +184,10 @@ fprintf('\nTraining Neural Network... \n')
 
 %  After you have completed the assignment, change the MaxIter to a larger
 %  value to see how more training helps.
-options = optimset('MaxIter', 400);%higher teh iteration higehr will be accuracy
+options = optimset('MaxIter', 400);%higher the iteration higehr will be accuracy
 
 %  You should also try different values of lambda
-lambda = 0.001; %keep to low as possible to avoid overfitting
+lambda = 0.01; % while traning keep it as  low as possible to avoid overfitting
 
 % Create "short hand" for the cost function to be minimized
 costFunction = @(p) nnCostFunction(p, ...

@@ -11,6 +11,7 @@ m = length(y); % number of training examples
 % You need to return the following variables correctly 
 J = 0;
 grad = zeros(size(theta));
+%a1=[ones(size(X,1),2) X];%adding bias term i.e 1 for theta0
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost and gradient of regularized linear 
@@ -18,23 +19,16 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
-tempTheta = theta;
-tempTheta(1) = 0;
+J= ((sum(((X * theta) - y).^2))+ (lambda .* ((theta(2)).^2))) ./ (2*m);%cost function
 
-J = (1 / (2*m) ) * sum(((X * theta)-y).^2) + (lambda / (2 * m))*sum(tempTheta.^2);
-temp = X * theta;
-error = temp - y;
-grad = (1 / m) * (X' * error) + (lambda/m)*tempTheta;
-
-
-
-
-
-
-
-
+%error=((theta * a1') -y);
+for i=1:size(theta,1),
+  if i==1
+    tempgrad=sum(((X * theta) -y) .* X(:,i)) .* (1/m);%excliding regularizatio for theta0
+  else
+    tempgrad=(sum(((X * theta) -y) .* X(:,i))+(lambda .*theta(i) )) .* (1/m);
+  end
+  grad(i,:)=tempgrad;
+endfor
 % =========================================================================
-
-grad = grad(:);
-
 end

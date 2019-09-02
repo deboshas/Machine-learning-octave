@@ -1,5 +1,5 @@
-function [lambda_vec, error_train, error_val] = ...
-    validationCurve(X, y, Xval, yval)
+function [lambda_vec, error_train, error_val,error_test] = ...
+    validationCurve(X, y, Xval, yval,X_poly_test,ytest)
 %VALIDATIONCURVE Generate the train and validation errors needed to
 %plot a validation curve that we can use to select lambda
 %   [lambda_vec, error_train, error_val] = ...
@@ -15,6 +15,7 @@ lambda_vec = [0 0.001 0.003 0.01 0.03 0.1 0.3 1 3 10]';
 % You need to return these variables correctly.
 error_train = zeros(length(lambda_vec), 1);
 error_val = zeros(length(lambda_vec), 1);
+error_test = zeros(length(lambda_vec), 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Fill in this function to return training errors in 
@@ -38,13 +39,23 @@ error_val = zeros(length(lambda_vec), 1);
 %       end
 %
 %
-for i = 1:length(lambda_vec)
-	lambda = lambda_vec(i);
-	theta = trainLinearReg(X, y, lambda);
-    error_train(i) = linearRegCostFunction(X, y, theta, 0);
-	error_val(i) = linearRegCostFunction(Xval,yval,theta,0);
-end
 
+theta = [0 ; 0];
+J=0;
+for i=1:size(lambda_vec,1),
+ 
+  [theta] = trainLinearReg(X, y, lambda_vec(i));
+  [Jtrain] = linearRegCostFunction(X, y, theta, lambda_vec(i));%traning error on subset of traning data
+  [JVal] = linearRegCostFunction(Xval, yval, theta, lambda_vec(i));%cross valdation error on entire validaton set
+  [JTest] = linearRegCostFunction(X_poly_test, ytest, theta, lambda_vec(i));
+  error_train(i)=Jtrain;
+  error_val(i)=JVal;
+  error_test(i)=JTest;
+% -------------------------------------------------------------
+
+% =========================================================================
+
+end
 
 
 

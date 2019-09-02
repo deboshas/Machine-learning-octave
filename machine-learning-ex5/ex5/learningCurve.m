@@ -1,5 +1,5 @@
-function [error_train, error_val] = ...
-    learningCurve(X, y, Xval, yval, lambda)
+function [error_train, error_val,error_test] = ...
+    learningCurve(X, y, Xval, yval,Xtest,ytest, lambda)
 %LEARNINGCURVE Generates the train and cross validation set errors needed 
 %to plot a learning curve
 %   [error_train, error_val] = ...
@@ -20,6 +20,7 @@ m = size(X, 1);
 % You need to return these values correctly
 error_train = zeros(m, 1);
 error_val   = zeros(m, 1);
+error_test   = zeros(m, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Fill in this function to return training errors in 
@@ -52,17 +53,18 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
-
-for i = 1:m
-	Xtrain =  X(1:i, :);
-	Ytrain = y(1:i);
-	theta = trainLinearReg(Xtrain,Ytrain,lambda);
-	error_train(i) = linearRegCostFunction(Xtrain,Ytrain,theta,0);
-	error_val(i) = linearRegCostFunction(Xval,yval,theta,0);
-end
-
-
-
+theta = [0 ; 0];
+J=0;
+for i=1:m,
+  xtrain=X(1:i,:);
+  ytrain=y(1:i,:);
+  [theta] = trainLinearReg(xtrain, ytrain, lambda);
+  [Jtrain] = linearRegCostFunction(xtrain, ytrain, theta, lambda);%traning error on subset of traning data
+  [JVal] = linearRegCostFunction(Xval, yval, theta, lambda);%cross valdation error on entire validaton set
+  [JTest] = linearRegCostFunction(Xtest, ytest, theta, lambda);%cross valdation error on entire validaton set
+  error_train(i)=Jtrain;
+  error_val(i)=JVal;
+  error_test(i)=JTest;
 % -------------------------------------------------------------
 
 % =========================================================================

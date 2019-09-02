@@ -105,21 +105,22 @@ pause;
 %
 
 lambda = 0;
-[error_train, error_val] = ...
+[error_train, error_val,error_test] = ...
     learningCurve([ones(m, 1) X], y, ...
-                  [ones(size(Xval, 1), 1) Xval], yval, ...
-                  lambda);
+                  [ones(size(Xval, 1), 1) Xval], yval,
+                   [ones(size(Xtest, 1), 1) Xtest], ytest,lambda);
+                 
 
-plot(1:m, error_train, 1:m, error_val);
+plot(1:m, error_train, 1:m, error_val,1:m, error_test);
 title('Learning curve for linear regression')
-legend('Train', 'Cross Validation')
+legend('Train', 'Cross Validation','Test')
 xlabel('Number of training examples')
 ylabel('Error')
 axis([0 13 0 150])
 
-fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
+fprintf('# Training Examples\tTrain Error\tCross Validation Error\tTest Error\n');
 for i = 1:m
-    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
+    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i),error_test(i));
 end
 
 fprintf('Program paused. Press enter to continue.\n');
@@ -164,7 +165,7 @@ pause;
 %  lambda to see how the fit and learning curve change.
 %
 
-lambda = 0;
+lambda = 3;
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
@@ -176,8 +177,8 @@ ylabel('Water flowing out of the dam (y)');
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 
 figure(2);
-[error_train, error_val] = ...
-    learningCurve(X_poly, y, X_poly_val, yval, lambda);
+[error_train, error_val,error_test] = ...
+    learningCurve(X_poly, y, X_poly_val, yval,X_poly_test,ytest, lambda);
 plot(1:m, error_train, 1:m, error_val);
 
 title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
@@ -187,9 +188,9 @@ axis([0 13 0 100])
 legend('Train', 'Cross Validation')
 
 fprintf('Polynomial Regression (lambda = %f)\n\n', lambda);
-fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
+fprintf('# Training Examples\tTrain Error\tCross Validation Error\tTest Error\n');
 for i = 1:m
-    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
+    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i),error_test(i));
 end
 
 fprintf('Program paused. Press enter to continue.\n');
@@ -201,19 +202,19 @@ pause;
 %  "best" lambda value.
 %
 
-[lambda_vec, error_train, error_val] = ...
-    validationCurve(X_poly, y, X_poly_val, yval);
+[lambda_vec, error_train, error_val,error_test] = ...
+    validationCurve(X_poly, y, X_poly_val, yval,X_poly_test,ytest);
 
 close all;
-plot(lambda_vec, error_train, lambda_vec, error_val);
-legend('Train', 'Cross Validation');
+plot(lambda_vec, error_train, lambda_vec, error_val,error_test);
+legend('Train', 'Cross Validation','Test');
 xlabel('lambda');
 ylabel('Error');
 
-fprintf('lambda\t\tTrain Error\tValidation Error\n');
+fprintf('lambda\t\tTrain Error\tValidation Error\tTest Error\n');
 for i = 1:length(lambda_vec)
-	fprintf(' %f\t%f\t%f\n', ...
-            lambda_vec(i), error_train(i), error_val(i));
+	fprintf(' %f\t%f\t%f\t%f\t\n', ...
+            lambda_vec(i), error_train(i), error_val(i),error_test(i));
 end
 
 fprintf('Program paused. Press enter to continue.\n');

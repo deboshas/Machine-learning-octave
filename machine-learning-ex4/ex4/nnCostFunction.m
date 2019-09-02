@@ -71,6 +71,7 @@ J= (sum(sum((tempy .* log(a3)) + ((1 - tempy) .* log(1-a3)))) *(-1/m)) + regular
 
 
 #Gradient calculation  usign back propagation
+%iterate over the no of traning examples
 for t=1:m,
   a1t=a1(t,:);%fetch the data row
   z2t=z2(:,t);%fetch t thcolmn
@@ -78,7 +79,7 @@ for t=1:m,
   z3t=z3(:,t);%fetch t the colun
   a3t=a3(:,t);%fetch  t th column
   err3t=a3t - tempy(:,t);%fetch t the  column
-  err2t=(Theta2(:,2:end))'* err3t .* sigmoidGradient(z2t);
+  err2t=(Theta2(:,2:end))'* err3t .* sigmoidGradient(z2t);%excludign bias parameters
   Theta1_grad=Theta1_grad+err2t * a1t;
   Theta2_grad=Theta2_grad+err3t * a2t';
 endfor
