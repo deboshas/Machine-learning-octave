@@ -15,13 +15,7 @@ sim = 0;
 %               sigma
 %
 %
-diff = x1 - x2;
-sqDiff = diff.^2;
-sim = exp(-sum(sqDiff)/(2*sigma*sigma));
-
-
-
-
+sim= exp ( -1 .* ((sum((x1 .- x2).^2))/(2 *(sigma)^2)));
 % =============================================================
     
 end
