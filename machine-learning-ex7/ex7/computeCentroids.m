@@ -1,5 +1,5 @@
 function centroids = computeCentroids(X, idx, K)
-%COMPUTECENTROIDS returs the new centroids by computing the means of the 
+%COMPUTECENTROIDS returns the new centroids by computing the means of the 
 %data points assigned to each centroid.
 %   centroids = COMPUTECENTROIDS(X, idx, K) returns the new centroids by 
 %   computing the means of the data points assigned to each centroid. It is
@@ -26,15 +26,6 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-numberOfElementsHavingCentroid_k = zeros(K,1);
-sumOfElementsHavingCentroid_k = zeros(K,n);
-for i = 1:size(idx,1)
-	z = idx(i);
-	numberOfElementsHavingCentroid_k(z) += 1;
-	sumOfElementsHavingCentroid_k(z,:) += X(i,:);
-end
-
-centroids = sumOfElementsHavingCentroid_k./numberOfElementsHavingCentroid_k;
 
 
 
