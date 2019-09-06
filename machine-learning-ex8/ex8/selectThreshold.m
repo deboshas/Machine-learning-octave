@@ -24,23 +24,19 @@ for epsilon = min(pval):stepsize:max(pval)
     %       of 0's and 1's of the outlier predictions
 
     predictions = (pval < epsilon);
-    tp = sum((predictions == 1) & (yval == 1));
-    fp = sum((predictions == 1) & (yval == 0));
-    fn = sum((predictions == 0) & (yval == 1));
-    prec = tp / (tp + fp);
-    rec = tp / (tp + fn);
-    F1 = 2 * prec * rec /(prec + rec);
-
-
-
-
+    tp = sum((predictions == 1) & (yval == 1)); %True positives
+    fp = sum((predictions == 1) & (yval == 0));%False positives
+    fn = sum((predictions == 0) & (yval == 1));%False Neative
+    precision = tp / (tp + fp);
+    recall = tp / (tp + fn);
+    F1 = (2 * precision * recall) /(precision + recall);
 
     % =============================================================
-
-    if F1 > bestF1
+  if F1 > bestF1
        bestF1 = F1;
        bestEpsilon = epsilon;
     end
+    
 end
 
 end
