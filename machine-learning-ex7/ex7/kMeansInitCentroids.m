@@ -13,6 +13,11 @@ centroids = zeros(K, size(X, 2));
 %               the dataset X
 %
 
+#shuffle X vecotor in a random order
+randidx = randperm(size(X, 1));
+
+#get the  first K Rows from X vector.
+centroids = X(randidx(1:K), :);
 
 
 

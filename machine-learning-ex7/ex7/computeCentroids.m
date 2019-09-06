@@ -25,7 +25,15 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
+total=zeros(1,n);
+for k=1:K
+  [row,col]=find(idx == k);
+   for j=1:size(row,1)
+     total=total+X(row(j),:);
+   endfor
+centroids(k,:)= total ./ size(row,1);
+total=zeros(1,n);
+endfor
 
 
 

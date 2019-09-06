@@ -18,15 +18,20 @@ idx = zeros(size(X,1), 1);
 %               closest to example i. Hence, it should be a value in the 
 %               range 1..K
 %
-% Note: You can use a for-loop over the examples to compute this.
-%
+% Note: You can use a for-loop over the examples to compute this
 
-
-
-
-
-
-
+for i=1 :size(X,1)
+  
+  mindistance= sqrt(sum((X(i,:) .- centroids(1,:)) .^2));
+  idx(i)=1;
+  for k=2:K
+    distance=sqrt(sum((X(i,:) .- centroids(k,:)) .^2));
+    if distance < mindistance
+      mindistance=distance;
+      idx(i)=k;
+    endif
+  endfor
+endfor
 % =============================================================
 
 end

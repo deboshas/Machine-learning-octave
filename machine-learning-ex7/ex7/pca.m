@@ -20,6 +20,10 @@ S = zeros(n);
 %       number of examples).
 %
 
+covarX= (1/m) .*  ( X' * X);%co-variance matrix of X.
+[U,S,V]=svd(covarX);% U is principal components ,S identity vector 
+%U eigen vectors(Principal components and S eigen value  for co variance of X.)
+
 
 
 

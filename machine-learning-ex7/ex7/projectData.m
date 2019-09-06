@@ -16,11 +16,11 @@ Z = zeros(size(X, 1), K);
 %               eigenvector is given as follows:
 %                    x = X(i, :)';
 %                    projection_k = x' * U(:, k);
-%
-
-
-
-
+for i=1:size(X,1),
+  x = X(i, :)';
+  for k =1 :K,
+  Z(i,k)=x' * U(:, k);%first K columns in Eigen vectors taken as K principal components as K diemsnions which will be used to reduce X into K dimension
+  endfor
+endfor
 % =============================================================
-
 end
